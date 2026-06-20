@@ -1,9 +1,9 @@
 @echo off
-title Dapoy Schools - Portable Server
+title Dapoy Schools Server
 color 0A
 
 :: ============================================================
-::  Dapoy Schools - Portable Start Script (Production Mode)
+::  Dapoy Schools - Universal Start Script
 :: ============================================================
 
 cd /d "%~dp0"
@@ -16,19 +16,25 @@ for /f "tokens=5" %%a in ('netstat -ano ^| findstr :5001 ^| findstr LISTENING') 
 )
 ping 127.0.0.1 -n 3 >nul 2>&1
 
-:: Set production mode
-set NODE_ENV=production
-
 echo.
 echo =======================================================
 echo               DAPOY SCHOOLS SERVER
-echo   Mode: PRODUCTION
 echo =======================================================
 echo.
-echo [*] Memulai server...
-echo [*] Buka browser dan akses: http://localhost:5001
-echo.
 
-node "%~dp0dist\server.cjs"
+if exist "dist\server.cjs" (
+    echo [*] Mode: PRODUCTION (dist/server.cjs ditemukan)
+    set NODE_ENV=production
+    echo [*] Memulai server...
+    echo [*] Buka browser dan akses: http://localhost:5001
+    echo.
+    node "%~dp0dist\server.cjs"
+) else (
+    echo [*] Mode: DEVELOPMENT (Source Code)
+    echo [*] Memulai server Vite ^& Node...
+    echo [*] Buka browser dan akses: http://localhost:5001
+    echo.
+    npm run dev
+)
 
 pause
