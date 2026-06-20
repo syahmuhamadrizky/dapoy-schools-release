@@ -69,7 +69,7 @@ Dapoy Schools hadir dengan segudang fitur *All-in-One* yang dibagi menjadi beber
    npm run build
    # Kemudian jalankan:
    node server.js
-   # Atau cukup klik ganda pada file start-portable Elearning.bat (Windows)
+   # Atau cukup klik ganda pada file start_dapoy_schools.bat (Windows)
    ```
 
 ---
