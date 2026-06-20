@@ -53,21 +53,14 @@ Dapoy Schools hadir dengan segudang fitur *All-in-One* yang dibagi menjadi beber
 
 1. **Clone & Install Dependensi**
    ```bash
-   git clone https://github.com/syahmuhamadrizky/dapoy-schools.git
-   cd dapoy-schools
-   npm install
+   git clone https://github.com/syahmuhamadrizky/dapoy-schools-release.git
+   cd dapoy-schools-release
+   npm install --production
    ```
 
-2. **Jalankan Aplikasi (Mode Development)**
+2. **Jalankan Aplikasi (Mode Produksi / VPS / cPanel)**
    ```bash
-   npm run dev
-   ```
-
-3. **Jalankan Aplikasi (Mode Produksi / VPS / cPanel)**
-   ```bash
-   npm run build
-   # Kemudian jalankan:
-   node server.js
+   node dist/server.cjs
    # Atau menggunakan PM2 untuk VPS:
    pm2 start dist/server.cjs --name "dapoy-schools"
    ```
