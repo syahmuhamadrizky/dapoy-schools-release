@@ -1,0 +1,6 @@
+Versi 1.2.0
+[+] Menambahkan Sistem Lisensi & Aktivasi terpusat (Dapoy Hub).
+[+] Menambahkan mekanisme pengecekan HWID otomatis.
+[+] Menambahkan halaman Lock Screen dan Banner Free Trial.
+[+] Menambahkan endpoint API baru (`/api/hwid`, `/api/license-status`, `/api/activate`).
+[+] Merapikan antarmuka dan struktur layout Dashboard.
