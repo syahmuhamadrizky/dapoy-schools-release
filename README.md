@@ -61,15 +61,15 @@ Dapoy Schools hadir dengan segudang fitur *All-in-One* yang dibagi menjadi beber
 2. **Jalankan Aplikasi (Mode Development)**
    ```bash
    npm run dev
-   # Atau cukup klik ganda pada file start_dev.bat (Windows)
    ```
 
-3. **Jalankan Aplikasi (Mode Portable / Produksi)**
+3. **Jalankan Aplikasi (Mode Produksi / VPS / cPanel)**
    ```bash
    npm run build
    # Kemudian jalankan:
    node server.js
-   # Atau cukup klik ganda pada file start_dapoy_schools.bat (Windows)
+   # Atau menggunakan PM2 untuk VPS:
+   pm2 start dist/server.cjs --name "dapoy-schools"
    ```
 
 ---
