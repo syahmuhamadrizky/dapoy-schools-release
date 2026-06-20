@@ -44,7 +44,7 @@ Dapoy Schools hadir dengan segudang fitur *All-in-One* yang dibagi menjadi beber
 ## 💻 Kebutuhan Sistem
 - **Sistem Operasi:** Windows / Linux / macOS
 - **Engine:** Node.js versi 18 atau lebih baru.
-- **Database:** SQLite3 (Sudah *built-in*, tanpa instalasi server database eksternal).
+- **Database:** MySQL / MariaDB (Direkomendasikan menggunakan XAMPP atau Laragon).
 - Akses Internet (Hanya saat proses pengecekan Lisensi / Aktivasi awal).
 
 ---
