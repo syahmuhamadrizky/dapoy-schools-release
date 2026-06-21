@@ -1,3 +1,7 @@
+Versi 1.2.1
+[+] Perbaikan sinkronisasi arsip siswa (Dapodik)
+[+] Perbaikan dashboard statistik grafik error (jenis_pegawai/jabatan)
+
 Versi 1.2.0
 [+] Menambahkan Sistem Lisensi & Aktivasi terpusat (Dapoy Hub).
 [+] Menambahkan mekanisme pengecekan HWID otomatis.
