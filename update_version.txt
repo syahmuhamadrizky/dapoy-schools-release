@@ -1,3 +1,7 @@
+Versi 1.3.6
+[+] Menambahkan halaman "Coming Soon" premium untuk fitur E-Learning
+[+] Mengubah rute E-Learning pada Navbar agar mengarah ke halaman Coming Soon
+
 Versi 1.3.5
 [+] Menambahkan banner pengingat Trial pada halaman publik
 [+] Menambahkan credit backlink Dapoy.net pada Footer website
