@@ -1,3 +1,8 @@
+Versi 1.3.3
+[+] Memperbaiki jeda 1 detik pada hitung mundur sisa waktu trial
+[+] Mempercantik UI Modal Aktivasi Lisensi menjadi lebih elegan dan premium
+[+] Memperkuat proteksi dan inisialisasi environment variabel lisensi
+
 Versi 1.3.2
 [+] Perbaikan UI/UX pada tab pengaturan (menyembunyikan scrollbar bawaan browser)
 [+] Perbaikan tata letak teks artikel blog agar tidak melebihi batas layar
