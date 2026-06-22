@@ -1,1 +1,1 @@
-Perbaikan tampilan rich text, fitur share blog, hapus live clock, konfigurasi hero stats.
+Perbaikan ukuran gambar galeri (responsif HP/mobile 1 kolom).
