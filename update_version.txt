@@ -1,3 +1,3 @@
-Versi 1.3.41
+Versi 1.3.42
 
-- FIX: Perbaikan tampilan list (bullet) pada editor rich text dan artikel
+- FIX: Perbaikan fitur auto-restart PM2 via tombol update di dashboard

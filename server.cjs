@@ -1167,7 +1167,15 @@ app.post("/api/system/install-update", authenticate, async (req, res) => {
         const tmpDir = path2.join(process.cwd(), "tmp");
         if (!fsExt.existsSync(tmpDir)) fsExt.mkdirSync(tmpDir);
         fsExt.writeFileSync(path2.join(tmpDir, "restart.txt"), String(Date.now()));
-        setTimeout(() => process.exit(0), 1e3);
+        setTimeout(() => {
+          if (process.env.pm_id) {
+            require("child_process").exec(`pm2 restart ${process.env.pm_id}`, (err) => {
+              if (err) process.exit(1);
+            });
+          } else {
+            process.exit(1);
+          }
+        }, 1e3);
       } catch (err) {
         console.error("[UPDATE] Background process error:", err);
       }
@@ -1188,7 +1196,13 @@ app.post("/api/system/restart-pm2", authenticate, async (req, res) => {
         if (!fsExt.existsSync(tmpDir)) fsExt.mkdirSync(tmpDir);
         fsExt.writeFileSync(path2.join(tmpDir, "restart.txt"), String(Date.now()));
         console.log("[SYSTEM] Memicu restart server (PM2/cPanel)...");
-        process.exit(0);
+        if (process.env.pm_id) {
+          require("child_process").exec(`pm2 restart ${process.env.pm_id}`, (err) => {
+            if (err) process.exit(1);
+          });
+        } else {
+          process.exit(1);
+        }
       } catch (err) {
         console.error("[SYSTEM] Restart error:", err);
       }
