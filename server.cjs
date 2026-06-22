@@ -1477,8 +1477,11 @@ app.get("/api/rombongan_belajar", authenticate, asyncHandler(async (req, res) =>
   if (req.user.type === "staff") {
     const perms = req.user.permissions || [];
     if (!perms.includes("all")) {
-      const [pegawaiRows] = await getPool().execute("SELECT jabatan_ptk FROM pegawai WHERE pegawai_id = ?", [req.user.staff_id]);
-      if (pegawaiRows.length > 0 && pegawaiRows[0].jabatan_ptk === "Guru Kelas") {
+      const [rombelCheck] = await getPool().execute(
+        "SELECT COUNT(*) as count FROM rombongan_belajar WHERE wali_kelas_id = ?",
+        [req.user.staff_id]
+      );
+      if (rombelCheck[0].count > 0) {
         whereClause = "WHERE r.wali_kelas_id = ?";
         params.push(req.user.staff_id);
       }
