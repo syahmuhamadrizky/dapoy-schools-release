@@ -9,25 +9,27 @@
 Dapoy Schools hadir dengan segudang fitur *All-in-One* yang dibagi menjadi beberapa modul utama:
 
 ### 1. 🛡️ Sistem Lisensi & Keamanan Terpusat
-- **Proteksi Hardware (HWID):** Lisensi aplikasi terkunci pada spesifikasi perangkat secara otomatis untuk mencegah pembajakan.
-- **Sistem *Free Trial*:** Pengalaman uji coba gratis selama 2 Jam secara otomatis pada instalasi pertama sebelum aplikasi terkunci.
-- **Integrasi Dapoy Hub:** Sinkronisasi langsung dengan `hub.dapoy.net` untuk aktivasi *License Key* secara instan.
+- **Proteksi Hardware (HWID):** Lisensi aplikasi terkunci pada spesifikasi perangkat (atau otomatis di-bypass aman untuk Shared Hosting/cPanel) mencegah pembajakan.
+- **Sistem *Free Trial*:** Pengalaman uji coba gratis selama **5 Hari** secara otomatis pada instalasi pertama sebelum aplikasi terkunci.
+- **Integrasi Dapoy Hub:** Sinkronisasi langsung dengan `hub.dapoy.net` untuk aktivasi *License Key* secara instan tanpa ribet.
 
 ### 2. 📝 Sistem Penerimaan Murid Baru (SPMB)
 - Panel Pendaftaran Mandiri.
 - Manajemen Status Pendaftar (Pending, Diterima, Ditolak).
 - Verifikasi Dokumen & Konversi pendaftar yang lulus menjadi Siswa Aktif dengan satu klik.
 
-### 3. 👥 Manajemen Data Siswa & Pegawai
-- **Database Siswa Terpadu:** Sistem pencarian *real-time*, filter by kelas/rombel, dan profil detail siswa.
-- **ID Card Digital:** Kemampuan mencetak Kartu Tanda Pelajar lengkap dengan Barcode/QR-Code.
-- **Manajemen Staf:** Pendataan Guru & Tenaga Kependidikan dengan hak akses berjenjang (Roles).
+### 3. 👥 Manajemen Data Siswa & Pegawai Terlengkap
+- **Database Siswa Terpadu:** Sistem pencarian *real-time*, filter by kelas/rombel, dan profil detail siswa mencakup biodata, data periodik, afirmasi, hingga riwayat masuk/keluar.
+- **ID Card Digital:** Kemampuan mencetak Kartu Tanda Pelajar lengkap dengan Barcode/QR-Code dengan desain elegan.
+- **Manajemen Staf & Pegawai:** Pendataan Guru & Tenaga Kependidikan dengan hak akses berjenjang (Role-Based Access Control).
+- **Pengajuan Perubahan Data:** Fitur interaktif bagi pengguna untuk merequest perubahan data yang kemudian di-review oleh Admin.
 
 ### 4. 📅 Akademik & Operasional
-- **Presensi Digital (Absensi):** Rekap kehadiran siswa harian dengan mudah.
+- **Presensi Digital (Absensi):** Rekap kehadiran siswa harian dengan mudah dan pelaporan yang terstruktur.
 - **Jadwal Pelajaran:** Tata kelola mata pelajaran dan pengingat kelas.
-- **Manajemen Kelas/Rombel:** Pemetaan siswa ke dalam rombongan belajar secara terstruktur.
-- **Kegiatan Ekstrakurikuler:** Pendataan kegiatan luar jam sekolah dan partisipasi siswa.
+- **Kalender Akademik:** Penjadwalan kegiatan sekolah, hari libur, dan event penting.
+- **Manajemen Kelas/Rombel:** Pemetaan siswa ke dalam rombongan belajar secara otomatis maupun manual.
+- **Kegiatan Ekstrakurikuler:** Pendataan kegiatan luar jam sekolah dan partisipasi aktif siswa.
 
 ### 5. 📢 Mading Digital & Publikasi
 - **Pengumuman Resmi:** Panel *broadcast* pengumuman untuk seluruh warga sekolah.
