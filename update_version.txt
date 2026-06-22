@@ -1,3 +1,3 @@
-Versi 1.3.40
+Versi 1.3.41
 
-- FIX: Perbaikan struktur folder update yang menyebabkan tampilan dashboard tidak berubah pada update sebelumnya
+- FIX: Perbaikan tampilan list (bullet) pada editor rich text dan artikel
