@@ -1151,6 +1151,26 @@ app.post("/api/system/install-update", authenticate, async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 });
+app.post("/api/system/restart-pm2", authenticate, async (req, res) => {
+  try {
+    res.json({ success: true, message: "Server sedang direstart. Mohon tunggu 5-10 detik." });
+    setTimeout(() => {
+      try {
+        const fsExt = require("fs");
+        const path2 = require("path");
+        const tmpDir = path2.join(__dirname, "tmp");
+        if (!fsExt.existsSync(tmpDir)) fsExt.mkdirSync(tmpDir);
+        fsExt.writeFileSync(path2.join(tmpDir, "restart.txt"), String(Date.now()));
+        console.log("[SYSTEM] Memicu restart server (PM2/cPanel)...");
+        process.exit(0);
+      } catch (err) {
+        console.error("[SYSTEM] Restart error:", err);
+      }
+    }, 1e3);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 app.post("/api/upload", authenticate, (req, res, next) => {
   upload.single("file")(req, res, (err) => {
     if (err) {
