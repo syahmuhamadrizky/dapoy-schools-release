@@ -176,9 +176,17 @@ var storage = import_multer.default.diskStorage({
 });
 var upload = (0, import_multer.default)({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }
-  // 5MB limit
+  limits: { fileSize: 10 * 1024 * 1024 }
+  // 10MB limit
 });
+function generateSEOTags(title, content = "") {
+  const text = (title + " " + content).replace(/<[^>]*>?/gm, " ").toLowerCase();
+  const stopWords = ["di", "ke", "dari", "yang", "dan", "atau", "ini", "itu", "pada", "dalam", "dengan", "untuk", "sebagai", "adalah", "ialah", "merupakan", "oleh", "kepada", "bagi", "sebab", "karena", "bisa", "dapat", "sudah", "telah", "akan", "ingin", "harus"];
+  const words = text.match(/[a-z0-9]+/g) || [];
+  const keywords = words.filter((word) => word.length > 3 && !stopWords.includes(word));
+  const uniqueKeywords = [...new Set(keywords)].slice(0, 15);
+  return uniqueKeywords.join(", ");
+}
 var uploadProfile = (0, import_multer.default)({
   storage: import_multer.default.diskStorage({
     destination: (req, file, cb) => cb(null, import_path.default.join(uploadDir, "profiles")),
@@ -483,7 +491,9 @@ async function initDb() {
             signature VARCHAR(100),
             publish_start TIMESTAMP NULL,
             publish_end TIMESTAMP NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            seo_tags TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
           )
         `
       },
@@ -796,6 +806,7 @@ async function initDb() {
             status VARCHAR(20) DEFAULT 'draft',
             publish_start TIMESTAMP NULL,
             publish_end TIMESTAMP NULL,
+            seo_tags TEXT,
             created_at DATETIME DEFAULT NULL,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (author_id) REFERENCES pengguna_web(id) ON DELETE SET NULL
@@ -810,6 +821,7 @@ async function initDb() {
             title VARCHAR(255),
             description TEXT,
             image_url TEXT NOT NULL,
+            seo_tags TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
           )
         `
@@ -997,6 +1009,9 @@ async function initDb() {
     await ensureColumn(p, "artikel_blog", "status", "VARCHAR(20) DEFAULT 'draft'");
     await ensureColumn(p, "artikel_blog", "publish_start", "TIMESTAMP NULL");
     await ensureColumn(p, "artikel_blog", "publish_end", "TIMESTAMP NULL");
+    await ensureColumn(p, "artikel_blog", "seo_tags", "TEXT");
+    await ensureColumn(p, "galeri", "seo_tags", "TEXT");
+    await ensureColumn(p, "pengumuman", "seo_tags", "TEXT");
     try {
       const [rows] = await p.execute("SELECT * FROM pengaturan_sekolah WHERE id = 1");
       if (rows.length === 0) {
@@ -1250,21 +1265,25 @@ app.get("/api/pengumuman", authenticate, asyncHandler(async (req, res) => {
 }));
 app.post("/api/pengumuman", authenticate, asyncHandler(async (req, res) => {
   const { title, target, status, intro, content, closing, signature, publish_start, publish_end } = req.body;
+  let { seo_tags } = req.body;
+  if (!seo_tags) seo_tags = generateSEOTags(title, (intro || "") + " " + content);
   await getPool().execute(
-    "INSERT INTO pengumuman (title, target, status, intro, content, closing, signature, publish_start, publish_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-    [title, target || "semua", status || "published", intro, content, closing, signature, publish_start || null, publish_end || null]
+    "INSERT INTO pengumuman (title, target, status, intro, content, closing, signature, publish_start, publish_end, seo_tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [title, target || "semua", status || "published", intro, content, closing, signature, publish_start || null, publish_end || null, seo_tags]
   );
   res.json({ success: true });
 }));
 app.put("/api/pengumuman/:id", authenticate, asyncHandler(async (req, res) => {
   const { title, target, status, intro, content, closing, signature, publish_start, publish_end } = req.body;
+  let { seo_tags } = req.body;
+  if (!seo_tags) seo_tags = generateSEOTags(title, (intro || "") + " " + content);
   await getPool().execute(
     `UPDATE pengumuman SET 
             title = ?, target = ?, status = ?, intro = ?, content = ?, 
             closing = ?, signature = ?,
-            publish_start = ?, publish_end = ?
+            publish_start = ?, publish_end = ?, seo_tags = ?
         WHERE id = ?`,
-    [title, target, status, intro, content, closing, signature, publish_start || null, publish_end || null, req.params.id]
+    [title, target, status, intro, content, closing, signature, publish_start || null, publish_end || null, seo_tags, req.params.id]
   );
   res.json({ success: true });
 }));
@@ -1592,15 +1611,33 @@ app.delete("/api/kalender_akademik/:id", authenticate, asyncHandler(async (req, 
   await getPool().execute("DELETE FROM kalender_akademik WHERE id = ?", [req.params.id]);
   res.json({ success: true });
 }));
-app.get("/api/jadwal_pelajaran", asyncHandler(async (req, res) => {
+app.get("/api/jadwal_pelajaran", authenticate, asyncHandler(async (req, res) => {
   const { class_name } = req.query;
-  let query = "SELECT * FROM jadwal_pelajaran";
+  let query = "SELECT jp.* FROM jadwal_pelajaran jp";
   let params = [];
+  let whereConditions = [];
   if (class_name) {
-    query += " WHERE class_name = ?";
-    params = [class_name];
+    whereConditions.push("jp.class_name = ?");
+    params.push(class_name);
   }
-  query += " ORDER BY day_name, start_time";
+  if (req.user.type === "staff") {
+    const perms = req.user.permissions || [];
+    if (!perms.includes("all")) {
+      query += " JOIN rombongan_belajar r ON jp.class_name = r.name";
+      const [rombelCheck] = await getPool().execute(
+        "SELECT COUNT(*) as count FROM rombongan_belajar WHERE wali_kelas_id = ?",
+        [req.user.staff_id]
+      );
+      if (rombelCheck[0].count > 0) {
+        whereConditions.push("r.wali_kelas_id = ?");
+        params.push(req.user.staff_id);
+      }
+    }
+  }
+  if (whereConditions.length > 0) {
+    query += " WHERE " + whereConditions.join(" AND ");
+  }
+  query += " ORDER BY jp.day_name, jp.start_time";
   const [rows] = await getPool().execute(query, params);
   res.json(rows);
 }));
@@ -2586,6 +2623,7 @@ app.get("/api/artikel_blog", asyncHandler(async (req, res) => {
                     author_name VARCHAR(255),
                     category VARCHAR(100) DEFAULT 'Kegiatan',
                     status VARCHAR(20) DEFAULT 'draft',
+                    seo_tags TEXT,
                     created_at DATETIME DEFAULT NULL,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                 )
@@ -2603,19 +2641,23 @@ app.get("/api/artikel_blog/:id", asyncHandler(async (req, res) => {
 }));
 app.post("/api/artikel_blog", authenticate, asyncHandler(async (req, res) => {
   const { title, content, image_url, category, status } = req.body;
+  let { seo_tags } = req.body;
+  if (!seo_tags) seo_tags = generateSEOTags(title, content);
   const author_id = req.user?.id || req.body.author_id;
   const author_name = req.user?.username || req.body.author_name;
   await getPool().execute(
-    "INSERT INTO artikel_blog (title, content, image_url, author_id, author_name, category, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())",
-    [title, content, image_url, author_id, author_name, category, status || "draft"]
+    "INSERT INTO artikel_blog (title, content, image_url, author_id, author_name, category, status, seo_tags, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())",
+    [title, content, image_url, author_id, author_name, category, status || "draft", seo_tags]
   );
   res.json({ success: true });
 }));
 app.put("/api/artikel_blog/:id", authenticate, asyncHandler(async (req, res) => {
   const { title, content, image_url, category, status } = req.body;
+  let { seo_tags } = req.body;
+  if (!seo_tags) seo_tags = generateSEOTags(title, content);
   await getPool().execute(
-    "UPDATE artikel_blog SET title = ?, content = ?, image_url = ?, category = ?, status = ? WHERE id = ?",
-    [title, content, image_url, category, status || "draft", req.params.id]
+    "UPDATE artikel_blog SET title = ?, content = ?, image_url = ?, category = ?, status = ?, seo_tags = ? WHERE id = ?",
+    [title, content, image_url, category, status || "draft", seo_tags, req.params.id]
   );
   res.json({ success: true });
 }));
@@ -2629,10 +2671,12 @@ app.get("/api/galeri", asyncHandler(async (req, res) => {
 }));
 app.post("/api/galeri", authenticate, asyncHandler(async (req, res) => {
   const { title, description, image_url } = req.body;
+  let { seo_tags } = req.body;
   if (!image_url) return res.status(400).json({ error: "URL Gambar harus diisi" });
+  if (!seo_tags) seo_tags = generateSEOTags(title || "", description || "");
   await getPool().execute(
-    "INSERT INTO galeri (title, description, image_url) VALUES (?, ?, ?)",
-    [title || null, description || null, image_url]
+    "INSERT INTO galeri (title, description, image_url, seo_tags) VALUES (?, ?, ?, ?)",
+    [title || null, description || null, image_url, seo_tags]
   );
   res.json({ success: true });
 }));
