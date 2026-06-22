@@ -1592,15 +1592,33 @@ app.delete("/api/kalender_akademik/:id", authenticate, asyncHandler(async (req, 
   await getPool().execute("DELETE FROM kalender_akademik WHERE id = ?", [req.params.id]);
   res.json({ success: true });
 }));
-app.get("/api/jadwal_pelajaran", asyncHandler(async (req, res) => {
+app.get("/api/jadwal_pelajaran", authenticate, asyncHandler(async (req, res) => {
   const { class_name } = req.query;
-  let query = "SELECT * FROM jadwal_pelajaran";
+  let query = "SELECT jp.* FROM jadwal_pelajaran jp";
   let params = [];
+  let whereConditions = [];
   if (class_name) {
-    query += " WHERE class_name = ?";
-    params = [class_name];
+    whereConditions.push("jp.class_name = ?");
+    params.push(class_name);
   }
-  query += " ORDER BY day_name, start_time";
+  if (req.user.type === "staff") {
+    const perms = req.user.permissions || [];
+    if (!perms.includes("all")) {
+      query += " JOIN rombongan_belajar r ON jp.class_name = r.name";
+      const [rombelCheck] = await getPool().execute(
+        "SELECT COUNT(*) as count FROM rombongan_belajar WHERE wali_kelas_id = ?",
+        [req.user.staff_id]
+      );
+      if (rombelCheck[0].count > 0) {
+        whereConditions.push("r.wali_kelas_id = ?");
+        params.push(req.user.staff_id);
+      }
+    }
+  }
+  if (whereConditions.length > 0) {
+    query += " WHERE " + whereConditions.join(" AND ");
+  }
+  query += " ORDER BY jp.day_name, jp.start_time";
   const [rows] = await getPool().execute(query, params);
   res.json(rows);
 }));
