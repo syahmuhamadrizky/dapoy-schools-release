@@ -1,3 +1,4 @@
-Versi 1.3.44
+Versi 1.3.45
 
-- FIX: Perbaikan rendering teks (kata terpotong) dan bullet list pada rich text editor
+- FEAT: Menambahkan sistem SPMB independen untuk pendaftar eksternal lengkap dengan login portal dan upload dokumen.
+- FEAT: Menambahkan toggle pengaktifan/penonaktifan pendaftaran SPMB dan portal login peserta.
