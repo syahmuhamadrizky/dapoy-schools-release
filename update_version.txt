@@ -1,3 +1,3 @@
-Versi 1.3.43
+Versi 1.3.44
 
-- FIX: Cegah cache browser pada index.html agar update UI langsung terlihat
+- FIX: Perbaikan rendering teks (kata terpotong) dan bullet list pada rich text editor
