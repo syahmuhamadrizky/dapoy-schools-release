@@ -2466,7 +2466,7 @@ app.post("/api/login", asyncHandler(async (req, res) => {
       return res.json({ success: true, token, role: "Admin", type: "staff" });
     }
     const [rows] = await getPool().execute(`
-            SELECT wu.*, r.name as role_name
+            SELECT wu.*, r.name as role_name, r.permissions
             FROM pengguna_web wu
             JOIN peran r ON wu.role_id = r.id
             WHERE wu.username = ?
