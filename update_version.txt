@@ -1,4 +1,3 @@
-Versi 1.3.39
+Versi 1.3.40
 
-- Fitur otomatis generate tag SEO (Meta Keywords) saat membuat/edit Blog, Galeri, dan Pengumuman
-- Fitur injeksi SEO Tag pada web publik untuk meningkatkan ranking di Google
+- FIX: Perbaikan struktur folder update yang menyebabkan tampilan dashboard tidak berubah pada update sebelumnya
