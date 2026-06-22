@@ -2916,6 +2916,9 @@ async function startServer() {
       app.use("/vite.svg", import_express.default.static(import_path.default.join(distPath, "vite.svg")));
       app.get("*", (req, res, next) => {
         if (req.path.startsWith("/api")) return next();
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.setHeader("Pragma", "no-cache");
+        res.setHeader("Expires", "0");
         res.sendFile(import_path.default.join(distPath, "index.html"));
       });
     }

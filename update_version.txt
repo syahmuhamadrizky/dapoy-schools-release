@@ -1,3 +1,3 @@
-Versi 1.3.42
+Versi 1.3.43
 
-- FIX: Perbaikan fitur auto-restart PM2 via tombol update di dashboard
+- FIX: Cegah cache browser pada index.html agar update UI langsung terlihat
