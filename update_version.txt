@@ -1,4 +1,18 @@
-Versi 1.3.45
+## Changelog - dapoy-schools
 
-- FEAT: Menambahkan sistem SPMB independen untuk pendaftar eksternal lengkap dengan login portal dan upload dokumen.
-- FEAT: Menambahkan toggle pengaktifan/penonaktifan pendaftaran SPMB dan portal login peserta.
+### v1.3.46 (2026-06-23) - Bug Fixes
+- fix: Google Drive image proxy tidak tampil di halaman Cetak Kartu Pelajar (StudentIdCard)
+- fix: StudentIdCard sekarang pre-fetch foto ke base64 agar bisa render saat print & download ZIP
+- fix: SQL collation error (utf8mb4_unicode_ci vs utf8mb4_0900_ai_ci) di endpoint /api/struktur-organisasi
+- fix: Tambah public endpoint /api/struktur-organisasi/public (tanpa auth) untuk halaman landing page
+- fix: Halaman publik Struktur Organisasi tidak tampil data
+- fix: Foto Drive tidak muncul di halaman Struktur Organisasi (admin & public)
+- fix: Foto Drive tidak muncul di halaman Guru/Staff (StaffSection)
+- fix: Foto Drive tidak muncul di Cetak Kartu Pelajar
+
+### v1.3.45 (2026-06-22) - SPMB Portal & Login Toggle
+- feat: SPMB Portal with student login
+- feat: Toggle Drive/Local storage on file upload
+- feat: CAPTCHA on registration page
+- feat: Perbaikan data (revision) flow for SPMB registrations
+- fix: Various SPMB registration bugfixes
