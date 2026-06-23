@@ -1867,6 +1867,18 @@ app.get("/api/jadwal_pelajaran", authenticate, asyncHandler(async (req, res) => 
   const [rows] = await getPool().execute(query, params);
   res.json(rows);
 }));
+app.get("/api/jadwal_pelajaran/public", asyncHandler(async (req, res) => {
+  const { class_name } = req.query;
+  let query = "SELECT jp.* FROM jadwal_pelajaran jp";
+  let params = [];
+  if (class_name) {
+    query += " WHERE jp.class_name = ?";
+    params.push(class_name);
+  }
+  query += " ORDER BY jp.day_name, jp.start_time";
+  const [rows] = await getPool().execute(query, params);
+  res.json(rows);
+}));
 app.post("/api/jadwal_pelajaran", authenticate, asyncHandler(async (req, res) => {
   const { class_name, day_name, subject, start_time, end_time, teacher_name } = req.body;
   await getPool().execute(

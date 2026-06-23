@@ -1,5 +1,9 @@
 ## Changelog - dapoy-schools
 
+### v1.3.49 (2026-06-23) - Bug Fixes
+- fix: Jadwal Pelajaran tidak tampil di halaman Layanan Akademik (Public) karena masalah autentikasi API
+
+
 ### v1.3.48 (2026-06-23) - Bug Fixes
 - fix: Form input Angka Statistik dkk tidak dapat disimpan ke database pengaturan sekolah
 
