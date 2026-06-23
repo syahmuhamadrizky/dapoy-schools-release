@@ -1594,7 +1594,10 @@ app.post("/api/pengaturan_sekolah", authenticate, asyncHandler(async (req, res) 
     sitemap_enabled,
     sync_token,
     active_template,
-    theme_color
+    theme_color,
+    hero_stats_value,
+    hero_stats_label,
+    hero_stats_desc
   } = req.body;
   try {
     const [result] = await getPool().execute(
@@ -1607,7 +1610,7 @@ app.post("/api/pengaturan_sekolah", authenticate, asyncHandler(async (req, res) 
         bentuk_pendidikan = ?, status_sekolah = ?, kurikulum = ?, gallery_slide_interval = ?,
         headmaster_name = ?, headmaster_nip = ?, schedule_date = ?, spmb_config = ?, social_links = ?,
         seo_title = ?, seo_description = ?, seo_keywords = ?, sitemap_enabled = ?, sync_token = ?,
-        active_template = ?, theme_color = ?
+        active_template = ?, theme_color = ?, hero_stats_value = ?, hero_stats_label = ?, hero_stats_desc = ?
       WHERE id = 1`,
       [
         school_name,
@@ -1645,13 +1648,16 @@ app.post("/api/pengaturan_sekolah", authenticate, asyncHandler(async (req, res) 
         sitemap_enabled,
         sync_token || null,
         active_template || "template1",
-        theme_color || "#2563eb"
+        theme_color || "#2563eb",
+        hero_stats_value,
+        hero_stats_label,
+        hero_stats_desc
       ]
     );
     if (result.affectedRows === 0) {
       await getPool().execute(
-        `INSERT INTO pengaturan_sekolah (id, school_name, npsn, akreditasi, logo_url, hero_image_url, hero_title, hero_subtitle, visi, misi, stats_students, stats_teachers, stats_rooms, stats_extracurriculars, provinsi, kota, kecamatan, kelurahan, contact_address, contact_phone, contact_email, bentuk_pendidikan, status_sekolah, kurikulum, gallery_slide_interval, headmaster_name, headmaster_nip, schedule_date, spmb_config, social_links, seo_title, seo_description, seo_keywords, sitemap_enabled, sync_token, active_template, theme_color)
-        VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO pengaturan_sekolah (id, school_name, npsn, akreditasi, logo_url, hero_image_url, hero_title, hero_subtitle, visi, misi, stats_students, stats_teachers, stats_rooms, stats_extracurriculars, provinsi, kota, kecamatan, kelurahan, contact_address, contact_phone, contact_email, bentuk_pendidikan, status_sekolah, kurikulum, gallery_slide_interval, headmaster_name, headmaster_nip, schedule_date, spmb_config, social_links, seo_title, seo_description, seo_keywords, sitemap_enabled, sync_token, active_template, theme_color, hero_stats_value, hero_stats_label, hero_stats_desc)
+        VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           school_name,
           npsn,
@@ -1688,7 +1694,10 @@ app.post("/api/pengaturan_sekolah", authenticate, asyncHandler(async (req, res) 
           sitemap_enabled,
           sync_token || null,
           active_template || "template1",
-          theme_color || "#2563eb"
+          theme_color || "#2563eb",
+          hero_stats_value,
+          hero_stats_label,
+          hero_stats_desc
         ]
       );
     }

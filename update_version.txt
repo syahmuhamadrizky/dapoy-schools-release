@@ -1,5 +1,9 @@
 ## Changelog - dapoy-schools
 
+### v1.3.48 (2026-06-23) - Bug Fixes
+- fix: Form input Angka Statistik dkk tidak dapat disimpan ke database pengaturan sekolah
+
+
 ### v1.3.47 (2026-06-23) - Bug Fixes
 - fix: Blank page error (Uncaught ReferenceError: BarChart3 is not defined) pada menu Absensi Siswa
 
