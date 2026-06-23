@@ -1,5 +1,9 @@
 ## Changelog - dapoy-schools
 
+### v1.3.51 (2026-06-23) - UI/UX Adjustments
+- style: Perkecil ukuran padding dan font pada kartu Jadwal Pendaftaran di halaman SPMB agar lebih rapi
+
+
 ### v1.3.50 (2026-06-23) - Enhancement
 - feat: Pindahkan Running Text pengumuman menjadi global di bawah Navbar
 - feat: Tambahkan sasaran Pengumuman untuk halaman Struktur Organisasi
