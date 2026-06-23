@@ -179,6 +179,7 @@ async function testDriveConnection(config, testFolderId) {
 }
 
 // server.ts
+var import_https = __toESM(require("https"), 1);
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import_dotenv.default.config();
 var isLicenseValid = true;
@@ -1331,10 +1332,26 @@ app.get("/api/system/version", authenticate, (req, res) => {
 app.get("/api/system/check-update", authenticate, async (req, res) => {
   try {
     const timestamp = (/* @__PURE__ */ new Date()).getTime();
-    const response = await fetch(`https://raw.githubusercontent.com/syahmuhamadrizky/dapoy-schools-release/main/package.json?t=${timestamp}`);
-    if (!response.ok) throw new Error("Gagal memeriksa update");
-    const remotePkg = await response.json();
-    const localPkg = JSON.parse(import_fs.default.readFileSync("./package.json", "utf8"));
+    const url = `https://raw.githubusercontent.com/syahmuhamadrizky/dapoy-schools-release/main/package.json?t=${timestamp}`;
+    const remotePkg = await new Promise((resolve, reject) => {
+      import_https.default.get(url, { headers: { "Cache-Control": "no-cache" } }, (resp) => {
+        let data = "";
+        resp.on("data", (chunk) => {
+          data += chunk;
+        });
+        resp.on("end", () => {
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            reject(e);
+          }
+        });
+      }).on("error", reject);
+    });
+    const isDist = __dirname.endsWith("dist") || __dirname.endsWith("dist\\");
+    const rootDir = isDist ? import_path.default.join(__dirname, "..") : __dirname;
+    const localPkgPath = import_path.default.join(rootDir, "package.json");
+    const localPkg = JSON.parse(import_fs.default.readFileSync(localPkgPath, "utf8"));
     const hasUpdate = remotePkg.version !== localPkg.version;
     res.json({
       available: hasUpdate,
@@ -1342,7 +1359,8 @@ app.get("/api/system/check-update", authenticate, async (req, res) => {
       latestVersion: remotePkg.version
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Check update error:", error);
+    res.status(500).json({ error: error.message || "Gagal memeriksa update" });
   }
 });
 app.post("/api/system/install-update", authenticate, async (req, res) => {
