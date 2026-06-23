@@ -1,5 +1,9 @@
 ## Changelog - dapoy-schools
 
+### v1.3.47 (2026-06-23) - Bug Fixes
+- fix: Blank page error (Uncaught ReferenceError: BarChart3 is not defined) pada menu Absensi Siswa
+
+
 ### v1.3.46 (2026-06-23) - Bug Fixes
 - fix: Google Drive image proxy tidak tampil di halaman Cetak Kartu Pelajar (StudentIdCard)
 - fix: StudentIdCard sekarang pre-fetch foto ke base64 agar bisa render saat print & download ZIP
