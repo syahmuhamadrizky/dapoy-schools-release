@@ -1,5 +1,10 @@
 ## Changelog - dapoy-schools
 
+### v1.3.50 (2026-06-23) - Enhancement
+- feat: Pindahkan Running Text pengumuman menjadi global di bawah Navbar
+- feat: Tambahkan sasaran Pengumuman untuk halaman Struktur Organisasi
+
+
 ### v1.3.49 (2026-06-23) - Bug Fixes
 - fix: Jadwal Pelajaran tidak tampil di halaman Layanan Akademik (Public) karena masalah autentikasi API
 
