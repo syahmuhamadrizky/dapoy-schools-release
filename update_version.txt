@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.54 (2026-06-23) - UI/UX Fixes
+- fix: Format teks pada halaman publik detail Blog/Berita (kata terpotong dan list/heading style)
+
 ### v1.3.53 (2026-06-23) - Enhancement
 - feat: Lengkapi toolbar Rich Text Editor (ReactQuill) untuk Blog/Berita
 - fix: Format teks pada halaman publik detail Blog/Berita
