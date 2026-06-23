@@ -303,7 +303,8 @@ try {
     import_path.default.join(uploadDir, "profiles"),
     import_path.default.join(uploadDir, "profiles", "siswa"),
     import_path.default.join(uploadDir, "profiles", "pegawai"),
-    import_path.default.join(uploadDir, "documents")
+    import_path.default.join(uploadDir, "documents"),
+    import_path.default.join(uploadDir, "bantuan")
   ];
   for (const dir of dirsToCreate) {
     if (!import_fs.default.existsSync(dir)) {
@@ -342,6 +343,14 @@ var uploadProfile = (0, import_multer.default)({
   }),
   limits: { fileSize: 1 * 1024 * 1024 }
   // 1MB limit
+});
+var uploadBantuan = (0, import_multer.default)({
+  storage: import_multer.default.diskStorage({
+    destination: (req, file, cb) => cb(null, import_path.default.join(uploadDir, "bantuan")),
+    filename: (req, file, cb) => cb(null, "bantuan-" + Date.now() + "-" + Math.round(Math.random() * 1e9) + import_path.default.extname(file.originalname))
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 }
+  // 5MB limit for docs
 });
 app.use(import_express.default.json({ limit: "50mb" }));
 app.use((req, res, next) => {
@@ -1064,6 +1073,69 @@ async function initDb() {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
           )
         `
+      },
+      {
+        name: "jenis_bantuan",
+        query: `
+          CREATE TABLE IF NOT EXISTS jenis_bantuan (
+            istilah VARCHAR(50) PRIMARY KEY,
+            nama_bantuan VARCHAR(255) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          )
+        `
+      },
+      {
+        name: "penerima_bantuan",
+        query: `
+          CREATE TABLE IF NOT EXISTS penerima_bantuan (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            siswa_id VARCHAR(36) NOT NULL,
+            istilah VARCHAR(50) NOT NULL,
+            tahun VARCHAR(20),
+            semester VARCHAR(10),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (siswa_id) REFERENCES siswa(id) ON DELETE CASCADE,
+            FOREIGN KEY (istilah) REFERENCES jenis_bantuan(istilah) ON DELETE CASCADE
+          )
+        `
+      },
+      {
+        name: "data_bank",
+        query: `
+          CREATE TABLE IF NOT EXISTS data_bank (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            siswa_id VARCHAR(36) NOT NULL,
+            istilah VARCHAR(50) NOT NULL,
+            nomor_rekening VARCHAR(100),
+            bank VARCHAR(100),
+            an_rekening VARCHAR(255),
+            upload_foto_buku_rekening TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (siswa_id) REFERENCES siswa(id) ON DELETE CASCADE,
+            FOREIGN KEY (istilah) REFERENCES jenis_bantuan(istilah) ON DELETE CASCADE
+          )
+        `
+      },
+      {
+        name: "laporan_bantuan",
+        query: `
+          CREATE TABLE IF NOT EXISTS laporan_bantuan (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            siswa_id VARCHAR(36) NOT NULL,
+            istilah VARCHAR(50) NOT NULL,
+            tahun VARCHAR(20),
+            semester VARCHAR(10),
+            tanggal_pencairan DATE,
+            tanggal_penarikan DATE,
+            nominal DECIMAL(15,2),
+            upload_foto_selfie TEXT,
+            upload_foto_transaksi TEXT,
+            tanda_tangan TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (siswa_id) REFERENCES siswa(id) ON DELETE CASCADE,
+            FOREIGN KEY (istilah) REFERENCES jenis_bantuan(istilah) ON DELETE CASCADE
+          )
+        `
       }
     ];
     for (const table of tables) {
@@ -1321,6 +1393,347 @@ var authenticate = (req, res, next) => {
 var asyncHandler = (fn) => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
+app.get("/api/bantuan/jenis", authenticate, async (req, res) => {
+  try {
+    const [rows] = await getPool().query("SELECT * FROM jenis_bantuan ORDER BY created_at DESC");
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.post("/api/bantuan/jenis", authenticate, async (req, res) => {
+  try {
+    const { nama_bantuan, istilah } = req.body;
+    if (!nama_bantuan || !istilah) {
+      return res.status(400).json({ error: "Nama bantuan dan istilah harus diisi" });
+    }
+    await getPool().query("INSERT INTO jenis_bantuan (nama_bantuan, istilah) VALUES (?, ?)", [nama_bantuan, istilah]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.delete("/api/bantuan/jenis/:id", authenticate, async (req, res) => {
+  try {
+    await getPool().query("DELETE FROM jenis_bantuan WHERE istilah = ?", [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.get("/api/bantuan/penerima", authenticate, async (req, res) => {
+  try {
+    const [rows] = await getPool().query(`
+            SELECT 
+                pb.id as penerima_bantuan_id, s.id as siswa_id, s.nama_lengkap, s.nisn, s.rombel, 
+                jb.nama_bantuan, jb.istilah, pb.tahun, pb.semester,
+                s.tempat_lahir, s.tanggal_lahir, s.nik, dk.nomor_hp, s.nomor_kk,
+                ibu.nama as nama_ibu, ibu.nik as nik_ibu,
+                ayah.nama as nama_ayah, ayah.nik as nik_ayah,
+                wali.nama as nama_wali, wali.nik as nik_wali,
+                db.bank, db.nomor_rekening, db.an_rekening, prb.penanggung_jawab_rekening
+            FROM penerima_bantuan pb
+            JOIN siswa s ON pb.siswa_id = s.id
+            LEFT JOIN data_kontak dk ON s.id = dk.siswa_id
+            JOIN jenis_bantuan jb ON pb.istilah = jb.istilah
+            LEFT JOIN data_orang_tua ibu ON s.id = ibu.siswa_id AND ibu.tipe = 'ibu'
+            LEFT JOIN data_orang_tua ayah ON s.id = ayah.siswa_id AND ayah.tipe = 'ayah'
+            LEFT JOIN data_orang_tua wali ON s.id = wali.siswa_id AND wali.tipe = 'wali'
+            LEFT JOIN data_bank db ON s.id = db.siswa_id AND db.istilah = pb.istilah
+            LEFT JOIN pengajuan_rekening_bantuan prb ON s.id = prb.siswa_id AND prb.istilah = pb.istilah
+            ORDER BY pb.created_at DESC
+        `);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.delete("/api/bantuan/penerima/:id", authenticate, async (req, res) => {
+  try {
+    await getPool().query("DELETE FROM penerima_bantuan WHERE id = ?", [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.get("/api/bantuan/siswa/me", authenticate, async (req, res) => {
+  try {
+    const siswaId = req.user.id;
+    const [rows] = await getPool().query(`
+            SELECT 
+                pb.id as penerima_bantuan_id, 
+                jb.nama_bantuan, jb.istilah, pb.tahun, pb.semester,
+                db.nomor_rekening, db.bank, db.an_rekening,
+                prb.id as pengajuan_id, prb.status_pengajuan
+            FROM penerima_bantuan pb
+            JOIN jenis_bantuan jb ON pb.istilah = jb.istilah
+            LEFT JOIN data_bank db ON pb.siswa_id = db.siswa_id AND pb.istilah = db.istilah
+            LEFT JOIN pengajuan_rekening_bantuan prb ON pb.siswa_id = prb.siswa_id AND pb.istilah = prb.istilah
+            WHERE pb.siswa_id = ?
+            ORDER BY pb.created_at DESC
+        `, [siswaId]);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.get("/api/bantuan/pengajuan_all", authenticate, async (req, res) => {
+  try {
+    const [rows] = await getPool().query(`
+            SELECT p.*, s.nama_lengkap AS siswa_nama, s.nisn, s.rombel AS nama_kelas, s.nik AS siswa_nik, j.nama_bantuan, db.nomor_rekening, db.bank
+            FROM pengajuan_rekening_bantuan p
+            LEFT JOIN siswa s ON p.siswa_id = s.id
+            LEFT JOIN jenis_bantuan j ON p.istilah = j.istilah
+            LEFT JOIN data_bank db ON p.siswa_id = db.siswa_id AND p.istilah = db.istilah
+            ORDER BY p.created_at DESC
+        `);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.get("/api/bantuan/rekening/:siswa_id/:istilah", authenticate, async (req, res) => {
+  try {
+    const { siswa_id, istilah } = req.params;
+    const [rows] = await getPool().query(
+      "SELECT nomor_rekening, bank, an_rekening, upload_foto_buku_rekening FROM data_bank WHERE siswa_id = ? AND istilah = ?",
+      [siswa_id, istilah]
+    );
+    res.json(rows[0] || { nomor_rekening: "", bank: "", an_rekening: "", upload_foto_buku_rekening: "" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.post("/api/bantuan/rekening/:siswa_id/:istilah", authenticate, uploadBantuan.single("buku_tabungan"), async (req, res) => {
+  try {
+    const { siswa_id, istilah } = req.params;
+    const { nomor_rekening, bank, an_rekening } = req.body;
+    let buku_tabungan_path = void 0;
+    if (req.file) {
+      buku_tabungan_path = "/uploads/bantuan/" + req.file.filename;
+    }
+    const [existing] = await getPool().query(
+      "SELECT id FROM data_bank WHERE siswa_id = ? AND istilah = ?",
+      [siswa_id, istilah]
+    );
+    if (existing.length > 0) {
+      let updateQuery = "UPDATE data_bank SET nomor_rekening = ?, bank = ?, an_rekening = ?";
+      const params = [nomor_rekening, bank, an_rekening];
+      if (buku_tabungan_path) {
+        updateQuery += ", upload_foto_buku_rekening = ?";
+        params.push(buku_tabungan_path);
+      }
+      updateQuery += " WHERE siswa_id = ? AND istilah = ?";
+      params.push(siswa_id, istilah);
+      await getPool().query(updateQuery, params);
+    } else {
+      await getPool().query(
+        "INSERT INTO data_bank (siswa_id, istilah, nomor_rekening, bank, an_rekening, upload_foto_buku_rekening) VALUES (?, ?, ?, ?, ?, ?)",
+        [siswa_id, istilah, nomor_rekening, bank, an_rekening, buku_tabungan_path || null]
+      );
+    }
+    res.json({ success: true, file: buku_tabungan_path });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.get("/api/bantuan/pengajuan/:siswa_id/:istilah", authenticate, async (req, res) => {
+  try {
+    const { siswa_id, istilah } = req.params;
+    const [siswaData] = await getPool().query("SELECT nik, nama_lengkap, tempat_lahir, tanggal_lahir, nomor_kk, provinsi, kota, kecamatan, kelurahan, rt, rw, alamat_jalan FROM siswa WHERE id = ?", [siswa_id]);
+    let nikSiswa = siswaData.length > 0 ? siswaData[0].nik || "" : "";
+    const [existing] = await getPool().query("SELECT * FROM pengajuan_rekening_bantuan WHERE siswa_id = ? AND istilah = ?", [siswa_id, istilah]);
+    if (existing.length > 0) {
+      let existingData = existing[0];
+      existingData.nik = nikSiswa;
+      return res.json(existingData);
+    }
+    const [kontakData] = await getPool().query("SELECT nomor_hp FROM data_kontak WHERE siswa_id = ?", [siswa_id]);
+    const [ortuData] = await getPool().query("SELECT tipe, nama, nik FROM data_orang_tua WHERE siswa_id = ?", [siswa_id]);
+    const [waliData] = await getPool().query("SELECT nama, nik FROM data_wali WHERE siswa_id = ?", [siswa_id]);
+    let prefill = {
+      nik: nikSiswa,
+      nama_lengkap: "",
+      tempat_lahir: "",
+      tanggal_lahir: "",
+      nomor_hp: "",
+      nomor_kk: "",
+      provinsi: "",
+      kota: "",
+      kecamatan: "",
+      kelurahan: "",
+      rt: "",
+      rw: "",
+      alamat_jalan: "",
+      nama_ayah: "",
+      nik_ayah: "",
+      nama_ibu: "",
+      nik_ibu: "",
+      wali: "",
+      nik_wali: "",
+      hubungan_wali: ""
+    };
+    if (siswaData.length > 0) {
+      const s = siswaData[0];
+      prefill.nama_lengkap = s.nama_lengkap || "";
+      prefill.tempat_lahir = s.tempat_lahir || "";
+      prefill.tanggal_lahir = s.tanggal_lahir ? new Date(s.tanggal_lahir).toISOString().split("T")[0] : "";
+      prefill.nomor_kk = s.nomor_kk || "";
+      prefill.provinsi = s.provinsi || "";
+      prefill.kota = s.kota || "";
+      prefill.kecamatan = s.kecamatan || "";
+      prefill.kelurahan = s.kelurahan || "";
+      prefill.rt = s.rt || "";
+      prefill.rw = s.rw || "";
+      prefill.alamat_jalan = s.alamat_jalan || "";
+    }
+    if (kontakData.length > 0) {
+      prefill.nomor_hp = kontakData[0].nomor_hp || "";
+    }
+    for (const ortu of ortuData) {
+      if (ortu.tipe === "ayah") {
+        prefill.nama_ayah = ortu.nama || "";
+        prefill.nik_ayah = ortu.nik || "";
+      }
+      if (ortu.tipe === "ibu") {
+        prefill.nama_ibu = ortu.nama || "";
+        prefill.nik_ibu = ortu.nik || "";
+      }
+    }
+    if (waliData.length > 0) {
+      prefill.wali = waliData[0].nama || "";
+      prefill.nik_wali = waliData[0].nik || "";
+    }
+    res.json(prefill);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.post("/api/bantuan/pengajuan/:siswa_id/:istilah", authenticate, uploadBantuan.fields([
+  { name: "foto_ktp", maxCount: 1 },
+  { name: "foto_kk", maxCount: 1 },
+  { name: "foto_akte", maxCount: 1 },
+  { name: "foto_surat_wali", maxCount: 1 }
+]), async (req, res) => {
+  try {
+    const { siswa_id, istilah } = req.params;
+    const body = req.body;
+    const files = req.files;
+    const renameFile = (fileObj, jenisFile) => {
+      if (!fileObj) return void 0;
+      const ext = import_path.default.extname(fileObj.originalname);
+      const sanitizedNama = (body.nama_lengkap || "").replace(/[^a-z0-9]/gi, "_").toLowerCase();
+      const newName = `${jenisFile}_${body.nik || "nonik"}_${sanitizedNama}${ext}`;
+      const oldPath = fileObj.path;
+      const newPath = import_path.default.join(fileObj.destination, newName);
+      if (import_fs.default.existsSync(oldPath)) {
+        import_fs.default.renameSync(oldPath, newPath);
+      }
+      return "/uploads/bantuan/" + newName;
+    };
+    let foto_ktp = renameFile(files["foto_ktp"]?.[0], "KTP");
+    let foto_kk = renameFile(files["foto_kk"]?.[0], "KK");
+    let foto_akte = renameFile(files["foto_akte"]?.[0], "AKTE");
+    let foto_surat_wali = renameFile(files["foto_surat_wali"]?.[0], "SURAT_WALI");
+    const [existing] = await getPool().query("SELECT id FROM pengajuan_rekening_bantuan WHERE siswa_id = ? AND istilah = ?", [siswa_id, istilah]);
+    if (existing.length > 0) {
+      let updateQuery = `UPDATE pengajuan_rekening_bantuan SET 
+                nama_lengkap=?, tempat_lahir=?, tanggal_lahir=?, 
+                nama_ayah=?, nik_ayah=?, nama_ibu=?, nik_ibu=?, status_orang_tua=?,
+                wali=?, nik_wali=?, hubungan_wali=?, nomor_hp=?, nomor_kk=?, 
+                provinsi=?, kota=?, kecamatan=?, kelurahan=?, rt=?, rw=?, alamat_jalan=?,
+                penanggung_jawab_rekening=?`;
+      const params = [
+        body.nama_lengkap,
+        body.tempat_lahir,
+        body.tanggal_lahir || null,
+        body.nama_ayah,
+        body.nik_ayah,
+        body.nama_ibu,
+        body.nik_ibu,
+        body.status_orang_tua || "Lengkap",
+        body.wali,
+        body.nik_wali,
+        body.hubungan_wali,
+        body.nomor_hp,
+        body.nomor_kk,
+        body.provinsi,
+        body.kota,
+        body.kecamatan,
+        body.kelurahan,
+        body.rt,
+        body.rw,
+        body.alamat_jalan,
+        body.penanggung_jawab_rekening
+      ];
+      if (foto_ktp) {
+        updateQuery += ", foto_ktp=?";
+        params.push(foto_ktp);
+      }
+      if (foto_kk) {
+        updateQuery += ", foto_kk=?";
+        params.push(foto_kk);
+      }
+      if (foto_akte) {
+        updateQuery += ", foto_akte=?";
+        params.push(foto_akte);
+      }
+      if (foto_surat_wali) {
+        updateQuery += ", foto_surat_wali=?";
+        params.push(foto_surat_wali);
+      }
+      if (body.status_pengajuan !== void 0) {
+        updateQuery += ", status_pengajuan=?";
+        params.push(body.status_pengajuan);
+      }
+      updateQuery += " WHERE siswa_id = ? AND istilah = ?";
+      params.push(siswa_id, istilah);
+      await getPool().query(updateQuery, params);
+    } else {
+      await getPool().query(
+        `INSERT INTO pengajuan_rekening_bantuan 
+                (siswa_id, istilah, nama_lengkap, tempat_lahir, tanggal_lahir, 
+                nama_ayah, nik_ayah, nama_ibu, nik_ibu, status_orang_tua,
+                wali, nik_wali, hubungan_wali, nomor_hp, nomor_kk,
+                provinsi, kota, kecamatan, kelurahan, rt, rw, alamat_jalan, 
+                penanggung_jawab_rekening, foto_ktp, foto_kk, foto_akte, foto_surat_wali) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          siswa_id,
+          istilah,
+          body.nama_lengkap,
+          body.tempat_lahir,
+          body.tanggal_lahir || null,
+          body.nama_ayah,
+          body.nik_ayah,
+          body.nama_ibu,
+          body.nik_ibu,
+          body.status_orang_tua || "Lengkap",
+          body.wali,
+          body.nik_wali,
+          body.hubungan_wali,
+          body.nomor_hp,
+          body.nomor_kk,
+          body.provinsi,
+          body.kota,
+          body.kecamatan,
+          body.kelurahan,
+          body.rt,
+          body.rw,
+          body.alamat_jalan,
+          body.penanggung_jawab_rekening,
+          foto_ktp || null,
+          foto_kk || null,
+          foto_akte || null,
+          foto_surat_wali || null
+        ]
+      );
+    }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 app.get("/api/system/version", authenticate, (req, res) => {
   try {
     const pkg = JSON.parse(import_fs.default.readFileSync("./package.json", "utf8"));
@@ -2483,6 +2896,7 @@ app.get("/api/siswa", authenticate, asyncHandler(async (req, res) => {
             dk.telepon_rumah as telepon_rumah, dk.nomor_hp as hp_orang_tua, dk.email as email_orang_tua,
             dp.tinggi_badan, dp.berat_badan, dp.lingkar_kepala, dp.jarak_rumah, dp.waktu_tempuh, dp.anak_keberapa, dp.jumlah_saudara_kandung,
             da.nomor_kks, da.penerima_kps_pkh, da.penerima_kip, da.nomor_kip, da.nama_sesuai_kip, da.nomor_kps, da.bank_pip, da.nomor_rek_pip, da.atasnama_rek_pip, da.layak_pip, da.alasan_layak_pip,
+            (SELECT GROUP_CONCAT(COALESCE(NULLIF(jb.istilah, ''), jb.nama_bantuan) SEPARATOR ', ') FROM penerima_bantuan pb JOIN jenis_bantuan jb ON pb.istilah = jb.istilah WHERE pb.siswa_id = s.id) as bantuan_diterima,
             COALESCE(fs_foto.drive, fs_foto.server) AS foto_profil
          FROM siswa s
         LEFT JOIN data_orang_tua dot_ayah ON s.id = dot_ayah.siswa_id AND dot_ayah.tipe = 'ayah'
@@ -2496,11 +2910,41 @@ app.get("/api/siswa", authenticate, asyncHandler(async (req, res) => {
     `, params);
   res.json(rows);
 }));
+app.post("/api/siswa/:id/bantuan", authenticate, asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { istilah, tahun, semester } = req.body;
+  if (!istilah) {
+    return res.status(400).json({ error: "istilah is required" });
+  }
+  const conn = await getPool().getConnection();
+  try {
+    await conn.beginTransaction();
+    const [existing] = await conn.execute(
+      `SELECT id FROM penerima_bantuan WHERE siswa_id = ? AND istilah = ? AND tahun = ? AND semester = ?`,
+      [id, istilah, tahun || null, semester || null]
+    );
+    if (existing.length > 0) {
+      await conn.rollback();
+      return res.status(400).json({ error: "Siswa sudah menerima bantuan ini pada tahun dan semester yang dipilih." });
+    }
+    await conn.execute(
+      `INSERT INTO penerima_bantuan (siswa_id, istilah, tahun, semester) VALUES (?, ?, ?, ?)`,
+      [id, istilah, tahun || null, semester || null]
+    );
+    await conn.commit();
+    res.json({ success: true });
+  } catch (err) {
+    await conn.rollback();
+    res.status(500).json({ error: err.message });
+  } finally {
+    conn.release();
+  }
+}));
 app.get("/api/siswa/search", authenticate, asyncHandler(async (req, res) => {
   const q = req.query.q;
   const [rows] = await getPool().execute(
-    "SELECT id, nama_lengkap, nisn, nik, nipd FROM siswa WHERE nisn LIKE ? OR nik LIKE ? LIMIT 5",
-    [`%${q}%`, `%${q}%`]
+    "SELECT id, nama_lengkap, nisn, nik, nipd FROM siswa WHERE nisn LIKE ? OR nik LIKE ? OR nama_lengkap LIKE ? LIMIT 10",
+    [`%${q}%`, `%${q}%`, `%${q}%`]
   );
   res.json(rows);
 }));

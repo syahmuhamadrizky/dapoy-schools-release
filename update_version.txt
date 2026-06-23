@@ -1,5 +1,11 @@
 ## Changelog - dapoy-schools
 
+### v1.3.55 (2026-06-24) - UI/UX Fixes
+- fix: Perbaikan Form Pengajuan Rekening (hanya menampilkan data pengajuan tanpa data bank yang belum ada)
+- fix: Tampilkan file berkas (KTP/KK/Akte) sebagai link yang bisa diklik ketika mode read-only (sudah diajukan)
+- fix: Penyesuaian UI Jadwal Pelajaran pada mode HP di Menu Profile (dihilangkan dari tampilan)
+- feat: Tambah latar belakang logo sekolah transparan pada mode mobile di StudentDashboard
+
 ### v1.3.54 (2026-06-23) - UI/UX Fixes
 - fix: Format teks pada halaman publik detail Blog/Berita (kata terpotong dan list/heading style)
 
