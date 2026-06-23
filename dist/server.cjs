@@ -1203,6 +1203,10 @@ async function initDb() {
     await ensureColumn(p, "pengaturan_sekolah", "sitemap_enabled", "BOOLEAN DEFAULT 1");
     await ensureColumn(p, "pengaturan_sekolah", "active_template", "VARCHAR(50) DEFAULT 'template1'");
     await ensureColumn(p, "pengaturan_sekolah", "theme_color", "VARCHAR(50) DEFAULT '#2563eb'");
+    await ensureColumn(p, "pengaturan_sekolah", "headmaster_photo", "TEXT");
+    await ensureColumn(p, "pengaturan_sekolah", "headmaster_welcome_title", "VARCHAR(255)");
+    await ensureColumn(p, "pengaturan_sekolah", "headmaster_welcome_content", "TEXT");
+    await ensureColumn(p, "pengaturan_sekolah", "headmaster_welcome_active", "BOOLEAN DEFAULT 1");
     await ensureColumn(p, "artikel_blog", "status", "VARCHAR(20) DEFAULT 'draft'");
     await ensureColumn(p, "artikel_blog", "publish_start", "TIMESTAMP NULL");
     await ensureColumn(p, "artikel_blog", "publish_end", "TIMESTAMP NULL");
@@ -1597,7 +1601,11 @@ app.post("/api/pengaturan_sekolah", authenticate, asyncHandler(async (req, res) 
     theme_color,
     hero_stats_value,
     hero_stats_label,
-    hero_stats_desc
+    hero_stats_desc,
+    headmaster_photo,
+    headmaster_welcome_title,
+    headmaster_welcome_content,
+    headmaster_welcome_active
   } = req.body;
   try {
     const [result] = await getPool().execute(
@@ -1610,7 +1618,8 @@ app.post("/api/pengaturan_sekolah", authenticate, asyncHandler(async (req, res) 
         bentuk_pendidikan = ?, status_sekolah = ?, kurikulum = ?, gallery_slide_interval = ?,
         headmaster_name = ?, headmaster_nip = ?, schedule_date = ?, spmb_config = ?, social_links = ?,
         seo_title = ?, seo_description = ?, seo_keywords = ?, sitemap_enabled = ?, sync_token = ?,
-        active_template = ?, theme_color = ?, hero_stats_value = ?, hero_stats_label = ?, hero_stats_desc = ?
+        active_template = ?, theme_color = ?, hero_stats_value = ?, hero_stats_label = ?, hero_stats_desc = ?,
+        headmaster_photo = ?, headmaster_welcome_title = ?, headmaster_welcome_content = ?, headmaster_welcome_active = ?
       WHERE id = 1`,
       [
         school_name,
@@ -1651,13 +1660,17 @@ app.post("/api/pengaturan_sekolah", authenticate, asyncHandler(async (req, res) 
         theme_color || "#2563eb",
         hero_stats_value,
         hero_stats_label,
-        hero_stats_desc
+        hero_stats_desc,
+        headmaster_photo,
+        headmaster_welcome_title,
+        headmaster_welcome_content,
+        headmaster_welcome_active === void 0 ? 1 : headmaster_welcome_active
       ]
     );
     if (result.affectedRows === 0) {
       await getPool().execute(
-        `INSERT INTO pengaturan_sekolah (id, school_name, npsn, akreditasi, logo_url, hero_image_url, hero_title, hero_subtitle, visi, misi, stats_students, stats_teachers, stats_rooms, stats_extracurriculars, provinsi, kota, kecamatan, kelurahan, contact_address, contact_phone, contact_email, bentuk_pendidikan, status_sekolah, kurikulum, gallery_slide_interval, headmaster_name, headmaster_nip, schedule_date, spmb_config, social_links, seo_title, seo_description, seo_keywords, sitemap_enabled, sync_token, active_template, theme_color, hero_stats_value, hero_stats_label, hero_stats_desc)
-        VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO pengaturan_sekolah (id, school_name, npsn, akreditasi, logo_url, hero_image_url, hero_title, hero_subtitle, visi, misi, stats_students, stats_teachers, stats_rooms, stats_extracurriculars, provinsi, kota, kecamatan, kelurahan, contact_address, contact_phone, contact_email, bentuk_pendidikan, status_sekolah, kurikulum, gallery_slide_interval, headmaster_name, headmaster_nip, schedule_date, spmb_config, social_links, seo_title, seo_description, seo_keywords, sitemap_enabled, sync_token, active_template, theme_color, hero_stats_value, hero_stats_label, hero_stats_desc, headmaster_photo, headmaster_welcome_title, headmaster_welcome_content, headmaster_welcome_active)
+        VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           school_name,
           npsn,
@@ -1697,7 +1710,11 @@ app.post("/api/pengaturan_sekolah", authenticate, asyncHandler(async (req, res) 
           theme_color || "#2563eb",
           hero_stats_value,
           hero_stats_label,
-          hero_stats_desc
+          hero_stats_desc,
+          headmaster_photo,
+          headmaster_welcome_title,
+          headmaster_welcome_content,
+          headmaster_welcome_active === void 0 ? 1 : headmaster_welcome_active
         ]
       );
     }

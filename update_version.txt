@@ -1,5 +1,9 @@
 ## Changelog - dapoy-schools
 
+### v1.3.52 (2026-06-23) - Enhancement
+- feat: Tambahkan bagian Sambutan Kepala Sekolah di halaman publik
+- fix: Menu Struktur Organisasi hilang saat halaman admin di-refresh
+
 ### v1.3.51 (2026-06-23) - UI/UX Adjustments
 - style: Perkecil ukuran padding dan font pada kartu Jadwal Pendaftaran di halaman SPMB agar lebih rapi
 
