@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.53 (2026-06-23) - Enhancement
+- feat: Lengkapi toolbar Rich Text Editor (ReactQuill) untuk Blog/Berita
+- fix: Format teks pada halaman publik detail Blog/Berita
 ### v1.3.52 (2026-06-23) - Enhancement
 - feat: Tambahkan bagian Sambutan Kepala Sekolah di halaman publik
 - fix: Menu Struktur Organisasi hilang saat halaman admin di-refresh
