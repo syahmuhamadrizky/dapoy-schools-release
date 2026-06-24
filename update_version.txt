@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.63 (2026-06-24) - UI Enhancement
+- style: Memperbarui tampilan banner pengumuman di Dashboard Pegawai agar hanya menampilkan judul saja. Isi pengumuman yang lebih rapi kini akan ditampilkan di dalam *Modal Pop-up* ketika tombol "Baca Selengkapnya" diklik.
+
 ### v1.3.62 (2026-06-24) - Feature Updates
 - feat: Menampilkan isi Warta Sekolah / Pengumuman secara langsung di halaman depan Dashboard Pegawai jika sasarannya diatur ke `Dashboard Pegawai`. Sebelumnya hanya menampilkan jumlah saja, kini banner pengumuman akan muncul besar di atas layar.
 
