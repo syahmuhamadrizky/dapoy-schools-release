@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.69 (2026-06-24) - Hotfix
+- fix: Memperbaiki 500 Internal Server Error pada API `/api/artikel_blog` yang disebabkan oleh referensi foreign key yang salah (pegawai_id) sehingga mengakibatkan UI Blog menjadi blank putih.
+
 ### v1.3.68 (2026-06-24) - Bug Fixes
 - fix: Memperbaiki masalah "blank putih" pada halaman publik Blog/Berita ketika ada artikel dengan kategori atau judul kosong (null)
 - fix: Memperbaiki komponen RequestsSection (Permohonan Perubahan Data) yang crash di TeacherDashboard karena ketidaksesuaian nama prop (requests vs data)
