@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.95 (2026-06-25) - UI Updates
+- style: Menghilangkan header, footer, dan navbar publik dari halaman Login (/login) agar tampilan form login menjadi layar penuh (fullscreen) dan lebih fokus.
+
 ### v1.3.94 (2026-06-25) - Dynamic PWA Manifest
 - feat: Mengubah file \manifest.json\ (PWA) menjadi dinamis. Nama aplikasi pada saat akan diinstal kini akan otomatis menyesuaikan dengan Nama Sekolah yang diatur pada database (Menu Pengaturan Web), bukan lagi *hardcoded* 'Dapoy Login'.
 
