@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.73 (2026-06-24) - UI/UX Fixes
+- fix: Memperbaiki posisi tombol aksi (Download ZIP, Cetak, Tutup) pada modal cetak Kartu Pelajar yang terpotong/tertutup saat diakses lewat *mobile* (HP). Tombol kini dipindah ke bagian bawah layar khusus mode *mobile* dan disusun memanjang ke bawah agar mudah diklik.
+
 ### v1.3.72 (2026-06-24) - UI/UX Fixes
 - feat: Mengoptimalkan tampilan tabel Database Peserta Didik di mode *mobile*. Menyembunyikan kolom NISN, Tahun, dan Status. Menampilkan NIK, NISN, dan Kelas langsung di bawah nama. Nama siswa kini bisa diklik untuk membuka detail, dan tombol detail (i) disembunyikan di menu aksi khusus mode *mobile*.
 
