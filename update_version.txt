@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.75 (2026-06-24) - UI Fixes
+- style: Merapikan tampilan tabel Daftar Pelajaran. Menghapus *badge* kelas yang berduplikat dengan nama kelas. Kolom "Guru Pengajar" digabungkan langsung di bawah nama "Mata Pelajaran" dengan teks yang lebih kecil agar lebih ringkas, serta menghilangkan label keterangan "Pengajar Utama".
+
 ### v1.3.74 (2026-06-24) - UI/UX & Print Fixes
 - feat: Mengubah desain tombol aksi pada modal Kartu Pelajar menjadi *icon* kotak yang disusun vertikal di pojok kanan layar, agar lebih rapi dan menghemat ruang.
 - fix: Menyempurnakan fitur "Cetak Kartu" agar saat diprint hanya memunculkan kartu pelajar saja, menghilangkan elemen *website* (halaman *dashboard*) yang sebelumnya ikut tercetak.
