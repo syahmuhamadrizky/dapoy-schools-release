@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.71 (2026-06-24) - UI/UX Fixes
+- style: Mengurangi padding dan margin pada area Footer agar tingginya lebih presisi, proporsional, dan lebih *clean* setelah beberapa komponen tidak digunakan.
+
 ### v1.3.70 (2026-06-24) - UI/UX Fixes
 - style: Menghapus bagian link Informasi (Tentang Sekolah, Program Unggulan) dan Menu Navigasi Bawah (Visi & Misi, Struktur Organisasi) pada Footer karena tidak digunakan.
 
