@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.83 (2026-06-24) - Feature Updates
+- feat: Menambahkan pengaturan Hak Akses (Role Permissions) untuk menu **Struktur Organisasi**. Admin kini bisa mengatur izin *View*, *Tambah*, *Edit*, dan *Delete* pada menu Hak Akses / Role untuk Struktur Organisasi agar dapat diterapkan ke *user* secara spesifik.
+
 ### v1.3.82 (2026-06-24) - UI Fixes
 - style: Memperbaiki masalah pemotongan teks secara paksa di tengah kata (seperti "s ekolah" atau "Bers ama") pada tampilan *rich-text* dan *blockquote* (biasanya dari Quill Editor atau Pengumuman). Sekarang sistem akan memotong teks pada batas kata secara normal (*word-wrap: break-word*) tanpa merusak kata.
 
