@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.59 (2026-06-24) - Feature Updates
+- feat: Menampilkan nama pegawai lengkap beserta gelar depan dan gelar belakang pada menu pencarian dan struktur organisasi
+
 ### v1.3.58 (2026-06-24) - UI/UX Fixes
 - style: Memperkecil ukuran elemen, padding, dan gap pada bagian Jadwal Pelajaran (Layanan Akademik) agar tampilan lebih proporsional dan tidak sesak
 
