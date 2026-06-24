@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.57 (2026-06-24) - UI/UX Fixes
+- style: Mengubah animasi pengumuman dari running text menjadi efek fade (blink) yang lebih elegan
+
 ### v1.3.56 (2026-06-24) - UI/UX Fixes
 - fix: Menghapus fallback title Dapoy Schools pada index.html saat pertama kali dimuat
 - feat: Menggunakan nama sekolah (seo_title / school_name) untuk SEO Meta tags dan link preview
