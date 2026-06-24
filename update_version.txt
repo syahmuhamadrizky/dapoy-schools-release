@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.62 (2026-06-24) - Feature Updates
+- feat: Menampilkan isi Warta Sekolah / Pengumuman secara langsung di halaman depan Dashboard Pegawai jika sasarannya diatur ke `Dashboard Pegawai`. Sebelumnya hanya menampilkan jumlah saja, kini banner pengumuman akan muncul besar di atas layar.
+
 ### v1.3.61 (2026-06-24) - Security & Permission Fixes
 - fix: Memperbaiki celah keamanan dimana user dengan role yang tidak memiliki akses `Tambah Database Siswa` masih bisa menambahkan, mengedit, dan menghapus siswa. Tombol tambah siswa kini disembunyikan jika tidak ada akses, dan backend menambahkan validasi keamanan ketat untuk seluruh endpoint `/api/siswa`.
 
