@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.88 (2026-06-25) - Security & Permission Updates
+- feat: Membatasi hak akses pada menu Bantuan Siswa untuk login Guru. Sekarang Guru hanya dapat melihat Daftar Penerima dan Pengajuan Rekening khusus untuk siswa yang berada di kelas (rombel) yang mereka ampu saja.
+
 ### v1.3.87 (2026-06-25) - Enhancement
 - feat: Mengurutkan semua daftar siswa secara alfabetis (A-Z) berdasarkan nama lengkap. Pengurutan ini berlaku secara global di seluruh sistem, termasuk pada menu Database Siswa, Laporan Kehadiran (Absensi), daftar penerima bantuan, dan hasil pencarian siswa.
 
