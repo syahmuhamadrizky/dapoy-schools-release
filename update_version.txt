@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.94 (2026-06-25) - Dynamic PWA Manifest
+- feat: Mengubah file \manifest.json\ (PWA) menjadi dinamis. Nama aplikasi pada saat akan diinstal kini akan otomatis menyesuaikan dengan Nama Sekolah yang diatur pada database (Menu Pengaturan Web), bukan lagi *hardcoded* 'Dapoy Login'.
+
 ### v1.3.93 (2026-06-25) - Bug Fix
 - fix: Memperbaiki routing file PWA (manifest.json, sw.js, dan icon) di server production sehingga file tersebut dapat diakses dengan benar oleh alat pembuat PWA seperti PWABuilder.
 
