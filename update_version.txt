@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.96 (2026-06-25) - Shortcut Name Update
+- style: Mengubah nama shortcut aplikasi PWA dan APK menjadi 'Tating One'.
+
 ### v1.3.95 (2026-06-25) - UI Updates
 - style: Menghilangkan header, footer, dan navbar publik dari halaman Login (/login) agar tampilan form login menjadi layar penuh (fullscreen) dan lebih fokus.
 
