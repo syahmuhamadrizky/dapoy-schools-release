@@ -1,5 +1,10 @@
 ## Changelog - dapoy-schools
 
+### v1.3.68 (2026-06-24) - Bug Fixes
+- fix: Memperbaiki masalah "blank putih" pada halaman publik Blog/Berita ketika ada artikel dengan kategori atau judul kosong (null)
+- fix: Memperbaiki komponen RequestsSection (Permohonan Perubahan Data) yang crash di TeacherDashboard karena ketidaksesuaian nama prop (requests vs data)
+- fix: Memperbaiki komponen BlogSection yang crash atau tidak memunculkan data di TeacherDashboard karena missing prop (blogPosts dan currentUser)
+
 ### v1.3.67 (2026-06-24) - Bug Fixes
 - fix: Penulis blog/berita kini menampilkan Nama Lengkap + Gelar (depan & belakang) dari data pegawai, bukan NIK/username
 - fix: Halaman Pengumuman di Dashboard Pegawai/Guru blank putih saat diklik "Lihat Pengumuman" (prop mismatch pada AnnouncementsSection)
