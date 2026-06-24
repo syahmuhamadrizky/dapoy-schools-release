@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.91 (2026-06-25) - PWA Feature
+- feat: Menambahkan dukungan PWA (Progressive Web App) khusus untuk halaman Login. Pengguna (Guru/Siswa) sekarang bisa 'Install App' atau 'Add to Home Screen' dari browser mereka. Aplikasi yang terinstal akan otomatis terbuka langsung di halaman Login tanpa menampilkan halaman *landing page* website.
+
 ### v1.3.90 (2026-06-25) - Authentication Updates
 - feat: Mengubah metode login khusus untuk Siswa. Sekarang siswa dapat masuk (login) menggunakan kombinasi **NISN atau NIK** sebagai username, dan **Tanggal Lahir** (melalui datepicker kalender) sebagai password.
 
