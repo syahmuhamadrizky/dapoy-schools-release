@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.70 (2026-06-24) - UI/UX Fixes
+- style: Menghapus bagian link Informasi (Tentang Sekolah, Program Unggulan) dan Menu Navigasi Bawah (Visi & Misi, Struktur Organisasi) pada Footer karena tidak digunakan.
+
 ### v1.3.69 (2026-06-24) - Hotfix
 - fix: Memperbaiki 500 Internal Server Error pada API `/api/artikel_blog` yang disebabkan oleh referensi foreign key yang salah (pegawai_id) sehingga mengakibatkan UI Blog menjadi blank putih.
 
