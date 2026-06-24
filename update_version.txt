@@ -1,5 +1,9 @@
 ## Changelog - dapoy-schools
 
+### v1.3.81 (2026-06-24) - Backend & UI Fixes
+- fix: Menambahkan field NIPD pada *response* API `/api/absensi` dan `/api/absensi/report` agar kolom NIPD pada menu Kehadiran tidak lagi kosong (`-`).
+- style: Memperbaiki *layout* form pada menu Berita/Pengumuman (Blog) di Dashboard Guru mode *mobile* (HP) agar letak kolom Kategori, Gambar, SEO Tags, dan Status tidak lagi menyempit dan lebih responsif (menurun ke bawah).
+
 ### v1.3.79 (2026-06-24) - UI Fixes
 - style: Menggabungkan 4 kolom status (Hadir, Sakit, Izin, Alpha) menjadi 1 kolom tunggal "Kehadiran (H-S-I-TK)" di tabel Laporan Absensi. Indikator kehadiran kini tampil sebagai *badge* dalam satu baris (contoh: `H: 2`, `S: 0`, `I: 1`, `TK: 0`) untuk lebih menghemat ruang horizontal, khususnya di layar perangkat *mobile*.
 
