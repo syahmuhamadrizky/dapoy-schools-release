@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.90 (2026-06-25) - Authentication Updates
+- feat: Mengubah metode login khusus untuk Siswa. Sekarang siswa dapat masuk (login) menggunakan kombinasi **NISN atau NIK** sebagai username, dan **Tanggal Lahir** (melalui datepicker kalender) sebagai password.
+
 ### v1.3.89 (2026-06-25) - UI Updates
 - style: Menyembunyikan tab 'Master Jenis Bantuan' dan 'Pengajuan Rekening' pada menu Bantuan Siswa di Dashboard Guru. Guru (Wali Kelas) kini hanya akan langsung melihat tab 'Daftar Penerima'.
 
