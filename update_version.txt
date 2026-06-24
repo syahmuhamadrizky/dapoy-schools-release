@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.89 (2026-06-25) - UI Updates
+- style: Menyembunyikan tab 'Master Jenis Bantuan' dan 'Pengajuan Rekening' pada menu Bantuan Siswa di Dashboard Guru. Guru (Wali Kelas) kini hanya akan langsung melihat tab 'Daftar Penerima'.
+
 ### v1.3.88 (2026-06-25) - Security & Permission Updates
 - feat: Membatasi hak akses pada menu Bantuan Siswa untuk login Guru. Sekarang Guru hanya dapat melihat Daftar Penerima dan Pengajuan Rekening khusus untuk siswa yang berada di kelas (rombel) yang mereka ampu saja.
 
