@@ -1,5 +1,11 @@
 ## Changelog - dapoy-schools
 
+### v1.3.77 (2026-06-24) - Authorization Fixes
+- fix: Menyembunyikan tab "Konfigurasi" pada halaman Daftar Pelajaran saat diakses oleh Guru. Menu tersebut kini hanya dapat diakses oleh Admin yang memiliki hak akses pengaturan (settings).
+
+### v1.3.76 (2026-06-24) - UI Fixes
+- style: Lebih menyederhanakan tabel Daftar Pelajaran dengan menggabungkan kolom "Waktu Belajar" ke dalam kolom "Hari". Keterangan waktu kini tampil di bawah hari dengan tambahan teks "WIB", sehingga tabel menjadi semakin ringkas dan lega untuk tampilan *mobile*.
+
 ### v1.3.75 (2026-06-24) - UI Fixes
 - style: Merapikan tampilan tabel Daftar Pelajaran. Menghapus *badge* kelas yang berduplikat dengan nama kelas. Kolom "Guru Pengajar" digabungkan langsung di bawah nama "Mata Pelajaran" dengan teks yang lebih kecil agar lebih ringkas, serta menghilangkan label keterangan "Pengajar Utama".
 
