@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.61 (2026-06-24) - Security & Permission Fixes
+- fix: Memperbaiki celah keamanan dimana user dengan role yang tidak memiliki akses `Tambah Database Siswa` masih bisa menambahkan, mengedit, dan menghapus siswa. Tombol tambah siswa kini disembunyikan jika tidak ada akses, dan backend menambahkan validasi keamanan ketat untuk seluruh endpoint `/api/siswa`.
+
 ### v1.3.60 (2026-06-24) - UI/UX Fixes
 - style: Memperkecil gap, padding, dan ukuran icon pada daftar mata pelajaran harian agar lebih compact dan tidak terlalu banyak memakan ruang ke bawah
 
