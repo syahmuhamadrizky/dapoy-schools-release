@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.92 (2026-06-25) - PWA Enhancements
+- feat: Menambahkan tombol 'Download PWA' di bagian Footer halaman publik (disamping ikon sosial media). Tombol ini memudahkan pengguna untuk menginstal aplikasi Dapoy Schools secara langsung ke perangkat mereka.
+
 ### v1.3.91 (2026-06-25) - PWA Feature
 - feat: Menambahkan dukungan PWA (Progressive Web App) khusus untuk halaman Login. Pengguna (Guru/Siswa) sekarang bisa 'Install App' atau 'Add to Home Screen' dari browser mereka. Aplikasi yang terinstal akan otomatis terbuka langsung di halaman Login tanpa menampilkan halaman *landing page* website.
 
