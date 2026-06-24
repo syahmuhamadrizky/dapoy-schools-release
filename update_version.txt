@@ -1,5 +1,11 @@
 ## Changelog - dapoy-schools
 
+### v1.3.79 (2026-06-24) - UI Fixes
+- style: Menggabungkan 4 kolom status (Hadir, Sakit, Izin, Alpha) menjadi 1 kolom tunggal "Kehadiran (H-S-I-TK)" di tabel Laporan Absensi. Indikator kehadiran kini tampil sebagai *badge* dalam satu baris (contoh: `H: 2`, `S: 0`, `I: 1`, `TK: 0`) untuk lebih menghemat ruang horizontal, khususnya di layar perangkat *mobile*.
+
+### v1.3.78 (2026-06-24) - UI Fixes
+- style: Merampingkan tabel "Isi Kehadiran" dan "Laporan Absensi" dengan menghapus kolom NISN terpisah. Data NISN dan NIPD kini langsung ditampilkan di bawah Nama Siswa agar tampilan tabel lebih lega, terutama di layar HP.
+
 ### v1.3.77 (2026-06-24) - Authorization Fixes
 - fix: Menyembunyikan tab "Konfigurasi" pada halaman Daftar Pelajaran saat diakses oleh Guru. Menu tersebut kini hanya dapat diakses oleh Admin yang memiliki hak akses pengaturan (settings).
 
