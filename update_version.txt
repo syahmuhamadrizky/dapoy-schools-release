@@ -1,5 +1,9 @@
 ## Changelog - dapoy-schools
 
+### v1.3.74 (2026-06-24) - UI/UX & Print Fixes
+- feat: Mengubah desain tombol aksi pada modal Kartu Pelajar menjadi *icon* kotak yang disusun vertikal di pojok kanan layar, agar lebih rapi dan menghemat ruang.
+- fix: Menyempurnakan fitur "Cetak Kartu" agar saat diprint hanya memunculkan kartu pelajar saja, menghilangkan elemen *website* (halaman *dashboard*) yang sebelumnya ikut tercetak.
+
 ### v1.3.73 (2026-06-24) - UI/UX Fixes
 - fix: Memperbaiki posisi tombol aksi (Download ZIP, Cetak, Tutup) pada modal cetak Kartu Pelajar yang terpotong/tertutup saat diakses lewat *mobile* (HP). Tombol kini dipindah ke bagian bawah layar khusus mode *mobile* dan disusun memanjang ke bawah agar mudah diklik.
 
