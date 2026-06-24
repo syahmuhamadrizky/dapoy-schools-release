@@ -1,5 +1,9 @@
 ## Changelog - dapoy-schools
 
+### v1.3.67 (2026-06-24) - Bug Fixes
+- fix: Penulis blog/berita kini menampilkan Nama Lengkap + Gelar (depan & belakang) dari data pegawai, bukan NIK/username
+- fix: Halaman Pengumuman di Dashboard Pegawai/Guru blank putih saat diklik "Lihat Pengumuman" (prop mismatch pada AnnouncementsSection)
+
 ### v1.3.63 (2026-06-24) - UI Enhancement
 - style: Memperbarui tampilan banner pengumuman di Dashboard Pegawai agar hanya menampilkan judul saja. Isi pengumuman yang lebih rapi kini akan ditampilkan di dalam *Modal Pop-up* ketika tombol "Baca Selengkapnya" diklik.
 
