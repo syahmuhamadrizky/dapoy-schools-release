@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.85 (2026-06-24) - Feature Updates
+- feat: Menambahkan pengaturan Hak Akses (Role Permissions) untuk menu **Bantuan Siswa**. Admin kini bisa mengatur izin spesifik (*View*, *Tambah*, *Edit*, dan *Delete*) pada menu Hak Akses / Role untuk fitur Bantuan Siswa.
+
 ### v1.3.84 (2026-06-24) - UI Enhancements
 - feat: Menambahkan informasi "Bantuan Siswa" berserta keterangan Tahun Pelajaran & Semester pada tampilan *mobile* (HP) di menu Database Siswa. Badge bantuan kini muncul tepat di bawah info Kelas.
 - style: Menampilkan tombol "Lihat Detail" (icon Info/Eye) pada kolom Aksi di tampilan *mobile* agar Guru/Admin lebih mudah membuka popup detail lengkap siswa dari HP.
