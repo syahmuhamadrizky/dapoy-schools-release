@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.87 (2026-06-25) - Enhancement
+- feat: Mengurutkan semua daftar siswa secara alfabetis (A-Z) berdasarkan nama lengkap. Pengurutan ini berlaku secara global di seluruh sistem, termasuk pada menu Database Siswa, Laporan Kehadiran (Absensi), daftar penerima bantuan, dan hasil pencarian siswa.
+
 ### v1.3.86 (2026-06-25) - Feature Updates & UI Enhancements
 - feat: Menyelaraskan form Pengajuan Rekening (Bantuan Siswa) di panel Siswa dengan dashboard Admin, meliputi penambahan field Alamat Lengkap, integrasi WilayahAutocomplete (otomatis cari Provinsi/Kota/Kecamatan/Kelurahan), opsi Status Keadaan Orang Tua, input otomatis Data Wali, serta keselarasan dokumen berkas KTP, KK, Akte, dan Surat Keterangan Wali.
 - style: Memperlebar elemen pilihan hari pada menu Jadwal Pelajaran (dashboard Siswa) agar teks hari tidak terlihat berdempetan dengan tombol clear (x) dan panah drop-down.
