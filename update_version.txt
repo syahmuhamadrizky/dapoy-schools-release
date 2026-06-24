@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.93 (2026-06-25) - Bug Fix
+- fix: Memperbaiki routing file PWA (manifest.json, sw.js, dan icon) di server production sehingga file tersebut dapat diakses dengan benar oleh alat pembuat PWA seperti PWABuilder.
+
 ### v1.3.92 (2026-06-25) - PWA Enhancements
 - feat: Menambahkan tombol 'Download PWA' di bagian Footer halaman publik (disamping ikon sosial media). Tombol ini memudahkan pengguna untuk menginstal aplikasi Dapoy Schools secara langsung ke perangkat mereka.
 
