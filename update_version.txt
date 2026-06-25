@@ -1,5 +1,9 @@
 ## Changelog - dapoy-schools
 
+### v1.4.0 (2026-06-25) - Feature Updates
+- feat: Menambahkan Tema ke-4: Tema Cheerful. Desain minimalis namun ceria dengan warna pastel, elemen membulat, dan navbar kapsul melayang.
+- feat: Admin kini dapat memilih Tema Cheerful langsung melalui menu Pengaturan Tampilan & Tema di Dashboard.
+
 ### v1.3.108 (2026-06-25) - Bug Fixes
 - fix: Tombol "Kembali ke Blog" tidak lagi tertutup navbar di Tema Modern (tema 2). Dibuat ModernBlogPost terpisah dengan padding lebih besar.
 - fix: Konten teks panjang pada halaman detail blog tidak lagi berantakan. Dihapus whitespace-pre-wrap dan diperbaiki CSS word-break agar teks wrap per-kata seperti Word.
