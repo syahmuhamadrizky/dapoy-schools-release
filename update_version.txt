@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.4.1 (2026-06-25) - Hotfix
+- fix: Memperbaiki website blank akibat `TypeError: r.map is not a function` pada pengaturan link sosial Tema Cheerful.
+
 ### v1.4.0 (2026-06-25) - Feature Updates
 - feat: Menambahkan Tema ke-4: Tema Cheerful. Desain minimalis namun ceria dengan warna pastel, elemen membulat, dan navbar kapsul melayang.
 - feat: Admin kini dapat memilih Tema Cheerful langsung melalui menu Pengaturan Tampilan & Tema di Dashboard.

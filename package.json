@@ -1,7 +1,7 @@
 {
   "name": "dapoy-schools",
   "private": true,
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Modern School Management System",
   "main": "server.js",
   "type": "module",
