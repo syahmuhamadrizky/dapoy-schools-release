@@ -1,5 +1,8 @@
 ## Changelog - dapoy-schools
 
+### v1.3.97 (2026-06-25) - Revert Shortcut Name
+- style: Membatalkan perubahan nama shortcut statis ('Tating One') dan mengembalikan logika nama PWA dan APK agar kembali menjadi dinamis mengikuti Nama Sekolah di database.
+
 ### v1.3.96 (2026-06-25) - Shortcut Name Update
 - style: Mengubah nama shortcut aplikasi PWA dan APK menjadi 'Tating One'.
 
