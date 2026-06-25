@@ -1,6 +1,10 @@
 ## Changelog - dapoy-schools
 
-### v1.3.97 (2026-06-25) - Revert Shortcut Name
+### v1.3.108 (2026-06-25) - Bug Fixes
+- fix: Tombol "Kembali ke Blog" tidak lagi tertutup navbar di Tema Modern (tema 2). Dibuat ModernBlogPost terpisah dengan padding lebih besar.
+- fix: Konten teks panjang pada halaman detail blog tidak lagi berantakan. Dihapus whitespace-pre-wrap dan diperbaiki CSS word-break agar teks wrap per-kata seperti Word.
+
+### v1.3.107 (2026-06-25) - Hotfix
 - style: Membatalkan perubahan nama shortcut statis ('Tating One') dan mengembalikan logika nama PWA dan APK agar kembali menjadi dinamis mengikuti Nama Sekolah di database.
 
 ### v1.3.96 (2026-06-25) - Shortcut Name Update
